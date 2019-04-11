@@ -4,44 +4,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <cn.xiaolong.pdfiumpdfviewer.pdf.PhotoViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"></cn.xiaolong.pdfiumpdfviewer.pdf.PhotoViewPager>
 
-    <ListView
-        android:id="@+id/lvGuide"
-        android:layout_width="200px"
-        android:layout_height="match_parent"
-        android:scrollbars="none" />
-
-    <ImageView
-        android:id="@+id/vGuide"
-        android:layout_width="50px"
-        android:layout_height="180px"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/lvGuide"
-        android:background="@drawable/corner_gray"
-        android:scaleType="fitCenter"
-        android:src="@drawable/select_viewer_state" />
-
-    <TextView
-        android:id="@+id/tvPosition"
-        android:layout_width="120px"
-        android:layout_height="50px"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="60px"
-        android:layout_marginTop="30px"
-        android:background="@drawable/corner6_gray"
-        android:gravity="center"
-        android:textColor="@color/main_black_color"
-        android:textSize="23px"
-        android:visibility="gone" />
 
     <cn.xiaolong.pdfiumpdfviewer.pdf.CircleProgressBar
         android:id="@+id/cpbLoad"
         android:layout_width="200px"
         android:layout_height="200px"
         android:layout_centerInParent="true" />
+
+    <TextView
+        android:id="@+id/tvPosition"
+        android:layout_width="120px"
+        android:layout_height="50px"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="30px"
+        android:layout_marginRight="60px"
+        android:background="@drawable/corner6_gray"
+        android:gravity="center"
+        android:textColor="@color/main_black_color"
+        android:textSize="23px"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/vGuide"
+            android:layout_width="180px"
+            android:layout_height="50px"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/corner_gray"
+            android:src="@drawable/select_viewer_state" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:scrollbars="horizontal" />
+    </LinearLayout>
 </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

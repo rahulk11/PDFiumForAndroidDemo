@@ -1,25 +1,43 @@
 package cn.xiaolong.pdfiumpdfviewer.pdf.list;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class ViewHolder
+import cn.xiaolong.pdfiumpdfviewer.R;
+
+public class ViewHolder extends RecyclerView.ViewHolder
 {
     private final SparseArray<View> mViews;
     private View mConvertView;
+    public ImageView imageView;
+    public TextView textView;
 
-    private ViewHolder(Context context, ViewGroup parent, int layoutId,
-                       int position)
-    {
+    public ViewHolder(View itemView) {
+        super(itemView);
         this.mViews = new SparseArray<View>();
-        mConvertView = LayoutInflater.from(context).inflate(layoutId, parent,
-                false);
-        //setTag
-        mConvertView.setTag(this);
+        this.imageView= itemView.findViewById(R.id.imageView);
+        this.textView=itemView.findViewById(R.id.tvLocate);
+
+
     }
+
+
+
+//    public ViewHolder(Context context, ViewGroup parent, int layoutId,
+//                      int position)
+//    {
+//        this.mViews = new SparseArray<View>();
+//        mConvertView = LayoutInflater.from(context).inflate(layoutId, parent,
+//                false);
+//        //setTag
+//        mConvertView.setTag(this);
+//    }
 
     /**
      * 拿到一个ViewHolder对象
@@ -30,16 +48,7 @@ public class ViewHolder
      * @param position
      * @return
      */
-    public static ViewHolder get(Context context, View convertView,
-                                 ViewGroup parent, int layoutId, int position)
-    {
 
-        if (convertView == null)
-        {
-            return new ViewHolder(context, parent, layoutId, position);
-        }
-        return (ViewHolder) convertView.getTag();
-    }
 
 
     /**
@@ -62,6 +71,23 @@ public class ViewHolder
     public View getConvertView()
     {
         return mConvertView;
+    }
+
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
+    }
+
+    public TextView getTextView() {
+        return textView;
+    }
+
+    public void setTextView(TextView textView) {
+        this.textView = textView;
     }
 }
 
