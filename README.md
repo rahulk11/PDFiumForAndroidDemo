@@ -1,4 +1,4 @@
-[![CSDN](https://img.shields.io/badge/CSDN-@xiaolongonly-blue.svg?style=flat)](http://blog.csdn.net/guoxiaolongonly)
+﻿[![CSDN](https://img.shields.io/badge/CSDN-@xiaolongonly-blue.svg?style=flat)](http://blog.csdn.net/guoxiaolongonly)
 [![CSDN](https://img.shields.io/badge/PersonBlog-@xiaolongonly-blue.svg?style=flat)](http://xiaolongonly.cn/)
 [![API](https://img.shields.io/badge/API-16%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=16)
 
@@ -16,7 +16,7 @@
 
 
 ```java
-
+#####
  mPDFManager = new PDFManager.Builder(this)
                 .pdfFromFile(downLoadPdfFile)
 				//or pdfFromStream()  pdfFromUri() pdfFormAsset() pdfFormByte()

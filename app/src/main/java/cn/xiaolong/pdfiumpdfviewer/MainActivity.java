@@ -1,14 +1,21 @@
+
 package cn.xiaolong.pdfiumpdfviewer;
 
+
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.RecyclerView;
 
 import java.io.File;
 
@@ -17,29 +24,38 @@ import cn.xiaolong.pdfiumpdfviewer.download.DownLoadManager;
 import cn.xiaolong.pdfiumpdfviewer.download.HttpProgressOnNextListener;
 import cn.xiaolong.pdfiumpdfviewer.pdf.CircleProgressBar;
 import cn.xiaolong.pdfiumpdfviewer.pdf.PDFManager;
+import cn.xiaolong.pdfiumpdfviewer.pdf.adapter.CustomAdapter;
 import cn.xiaolong.pdfiumpdfviewer.pdf.adapter.PdfGuideAdapter;
 import cn.xiaolong.pdfiumpdfviewer.pdf.adapter.PdfImageAdapter;
 import cn.xiaolong.pdfiumpdfviewer.pdf.utils.FileUtils;
 
-public class MainActivity extends AppCompatActivity implements HttpProgressOnNextListener<DownLoadInfo> {
+public class MainActivity extends Activity implements HttpProgressOnNextListener<DownLoadInfo> {
 
     private CircleProgressBar cpbLoad;
     private PDFManager mPDFManager;
     private ViewPager mViewpager;
-    private ListView mListView;
-    private View vGuide;
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private ImageView vGuide;
+    private PdfGuideAdapter pdfGuideAdapter;
+    private CustomAdapter customAdapter;
     private File downLoadPdfFile;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        linearLayoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false);
         setContentView(R.layout.activity_main);
         init();
         setListener();
+
     }
 
+
     protected void init() {
+        mRecyclerView=(RecyclerView)findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         cpbLoad = (CircleProgressBar) findViewById(R.id.cpbLoad);
         vGuide = findViewById(R.id.vGuide);
         vGuide.setVisibility(View.GONE);
@@ -91,12 +107,13 @@ public class MainActivity extends AppCompatActivity implements HttpProgressOnNex
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
-
             @Override
             public void onPageSelected(int position) {
                 textView.setText(position + 1 + "/" + mPDFManager.pageCount());
-                ((PdfGuideAdapter) mListView.getAdapter()).setStatePosition(position);
-                mListView.smoothScrollToPosition(position);
+//                mRecyclerView.getAdapter().
+                customAdapter.setStatePosition(position);
+                mRecyclerView.smoothScrollToPosition(position);
+
             }
 
             @Override
@@ -107,11 +124,11 @@ public class MainActivity extends AppCompatActivity implements HttpProgressOnNex
     }
 
     private void initListView() {
-        mListView = (ListView) findViewById(R.id.lvGuide);
-        mListView.setVisibility(View.GONE);
-        PdfGuideAdapter pdfGuideAdapter = new PdfGuideAdapter(this, mPDFManager);
-        pdfGuideAdapter.setOnItemClickListener(v -> mViewpager.setCurrentItem((int) v.getTag()));
-        mListView.setAdapter(pdfGuideAdapter);
+       mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+      mRecyclerView.setVisibility(View.GONE);
+         customAdapter = new CustomAdapter(this, mPDFManager);
+        customAdapter.setOnItemClickListener(v -> mViewpager.setCurrentItem((int) v.getTag()));
+        mRecyclerView.setAdapter(customAdapter);
     }
 
     private DownLoadInfo getDownLoadInfo() {
@@ -119,17 +136,27 @@ public class MainActivity extends AppCompatActivity implements HttpProgressOnNex
           /*下载回调*/
         mDownLoadInfo.listener = this;
         mDownLoadInfo.savePath = downLoadPdfFile.getAbsolutePath();
-        mDownLoadInfo.url = "https://d11.baidupcs.com/file/d10b1184525be1fa2185cbd1b17f244e?bkt=p3-1400d10b1184525be1fa2185cbd1b17f244e538a176a0000001d530b&xcode=d99bdf2146c60fedd1163b4354f9afd7c85d2bd05878864c0b2977702d3e6764&fid=1695803216-250528-664972808641582&time=1502263894&sign=FDTAXGERLBHS-DCb740ccc5511e5e8fedcff06b081203-8jadaXCWaHHtT4Uj%2F1bjxk9al74%3D&to=d11&size=1921803&sta_dx=1921803&sta_cs=283546&sta_ft=pdf&sta_ct=7&sta_mt=7&fm2=MH,Yangquan,Netizen-anywhere,,fujian,ct&newver=1&newfm=1&secfm=1&flow_ver=3&pkey=1400d10b1184525be1fa2185cbd1b17f244e538a176a0000001d530b&sl=76480590&expires=8h&rt=sh&r=723264417&mlogid=5117425091165905134&vuk=1695803216&vbdid=1114076982&fin=%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E8%AF%8D%E6%B1%87%28%E5%8C%97%E4%BA%AC%E5%B0%9A%E5%AD%A6%E5%A0%82%E5%8F%91%E5%B8%83%29.pdf&fn=%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E8%AF%8D%E6%B1%87%28%E5%8C%97%E4%BA%AC%E5%B0%9A%E5%AD%A6%E5%A0%82%E5%8F%91%E5%B8%83%29.pdf&rtype=1&iv=0&dp-logid=5117425091165905134&dp-callid=0.1.1&hps=1&csl=80&csign=WryUYKeHbb5ItV4jNvcrPWowU%2Bo%3D&so=0&ut=6&uter=4&serv=0&by=themis";
+        mDownLoadInfo.url = "https://archive.org/download/theoryoffilmrede00krac/theoryoffilmrede00krac.pdf";
         return mDownLoadInfo;
     }
 
     protected void setListener() {
         vGuide.setOnClickListener(v -> {
             if (!vGuide.isSelected()) {
-                mListView.setVisibility(View.VISIBLE);
+//                RelativeLayout.LayoutParams layoutParams= (RelativeLayout.LayoutParams) vGuide.getLayoutParams();
+//                layoutParams.addRule(RelativeLayout.ALIGN_TOP,R.id.recycler_view);
+//                RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(100,100);
+//                params.addRule(RelativeLayout.ALIGN_TOP,R.id.recycler_view);
+//                params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+//                vGuide.setLayoutParams(params);
+                mRecyclerView.setVisibility(View.VISIBLE);
                 vGuide.setSelected(true);
             } else {
-                mListView.setVisibility(View.GONE);
+//                RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(100,100);
+//                params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+//                params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//                vGuide.setLayoutParams(params);
+               mRecyclerView.setVisibility(View.GONE);
                 vGuide.setSelected(false);
             }
         });
